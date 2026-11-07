@@ -131,11 +131,13 @@ export function DocumentViewer({ doc, onClose }: Props) {
           >
             <motion.div
               key={doc.image.base}
-              className={full ? 'p-4 sm:p-8' : 'absolute inset-0 flex items-center justify-center p-3 sm:p-8'}
+              className={full ? 'p-4 sm:p-8' : 'absolute inset-0 p-3 sm:p-8'}
               initial={{ opacity: 0, y: 16, scale: 0.985 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, ease }}
             >
+              {/* Fit mode sizes the frame from the known aspect ratio (container units), so it has the right shape before the image loads. */}
+              <div className={full ? '' : 'flex h-full w-full items-center justify-center [container-type:size]'}>
               <img
                 src={docSrc(doc)}
                 srcSet={docSrcSet(doc)}
@@ -146,13 +148,18 @@ export function DocumentViewer({ doc, onClose }: Props) {
                 decoding="async"
                 onClick={() => setFull((f) => !f)}
                 // Inline max-width: the global `img { max-width: 100% }` rule is unlayered and would beat a utility class.
-                style={full ? { width: doc.fullWidth, maxWidth: 'none' } : undefined}
+                style={{
+                  aspectRatio: `${doc.image.width} / ${doc.image.height}`,
+                  height: 'auto',
+                  ...(full
+                    ? { width: doc.fullWidth, maxWidth: 'none' }
+                    : { width: `min(100cqw, calc(100cqh * ${doc.image.width / doc.image.height}))` }),
+                }}
                 className={`rounded-sm border border-line bg-white shadow-[var(--shadow)] ${
-                  full
-                    ? 'mx-auto h-auto max-w-none cursor-zoom-out'
-                    : 'h-auto max-h-full w-auto max-w-full cursor-zoom-in'
+                  full ? 'mx-auto cursor-zoom-out' : 'cursor-zoom-in'
                 }`}
               />
+              </div>
             </motion.div>
           </div>
         </motion.div>
