@@ -1,0 +1,8 @@
+node_modules
+dist
+*.local
+.DS_Store
+*.tsbuildinfo
+
+# Supplied photo no longer used on the site; kept locally, not published
+public/images/nafisa-gallery.jpeg
