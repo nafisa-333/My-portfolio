@@ -38,6 +38,10 @@ src/
 
 The originals in `public/images/` are served as fallbacks. The WebP files in `public/images/optimized/` were resized from them without changing framing or content. If you replace a photograph, regenerate the variants at the widths listed in `photos` in `src/data/content.ts`.
 
+## Documents
+
+`public/documents/` holds the downloadable PDFs: the public CV (pages 1–2 of the full CV; the page with personal details and referees is deliberately excluded) and the ML in MRI research poster and certificate of presentation. The poster and certificate previews use WebP renderings in `public/images/optimized/` (`ml-mri-*`). If a PDF is replaced, re-render its preview images at 1200 and 2400 px wide.
+
 ## Deployment
 
 Pushing to `main` runs [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which installs dependencies, builds the site and publishes `dist/` to GitHub Pages. The Vite `base` in `vite.config.ts` is `/My-portfolio/` to match the repository name; change it if the repository is renamed or moved to a custom domain.

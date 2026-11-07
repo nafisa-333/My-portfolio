@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
-import { photos, profile } from '../data/content';
+import { ArrowDown, ArrowUpRight, Download } from 'lucide-react';
+import { cv, photos, profile } from '../data/content';
 import { Photo } from '../components/Photo';
 import { Landscape } from '../components/Landscape';
 import { ease } from '../components/Reveal';
@@ -149,6 +149,20 @@ export function Hero() {
                 size={16}
                 strokeWidth={2}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </a>
+            <a
+              href={cv.href}
+              download={cv.filename}
+              type="application/pdf"
+              className="group inline-flex items-center gap-2.5 rounded-full border border-line-strong bg-bg/40 px-7 py-3.5 text-sm font-semibold text-ink backdrop-blur-sm transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-gold active:translate-y-0 active:scale-[0.98]"
+            >
+              Download CV
+              <Download
+                size={16}
+                strokeWidth={2}
+                aria-hidden="true"
+                className="transition-transform duration-300 group-hover:translate-y-0.5"
               />
             </a>
           </motion.div>

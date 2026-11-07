@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { researchInterests } from '../data/content';
+import { researchBackdrop, researchInterests } from '../data/content';
 import { ease, inViewOnce } from '../components/Reveal';
 
 /**
@@ -13,6 +13,29 @@ export function Research() {
       aria-labelledby="research-title"
       className="grain relative isolate overflow-hidden bg-[#173D2C] py-24 text-[#F4F2E9] sm:py-32 lg:py-40 dark:bg-[#0D251D] dark:text-[#EAE9DC]"
     >
+      {/*
+        Photographic texture: the portrait sits at ~5–8% opacity behind a forest-green wash.
+        Mobile: anchored to the top of the section and faded downwards. Desktop: on the right, faded towards the text.
+        Light theme keeps a warm, sepia-toned print; dark theme a cooler monochrome one.
+      */}
+      <div className="pointer-events-none absolute inset-0 -z-20" aria-hidden="true">
+        <img
+          src={researchBackdrop.src}
+          srcSet={researchBackdrop.srcSet}
+          sizes="(min-width: 1024px) 55vw, 100vw"
+          width={researchBackdrop.width}
+          height={researchBackdrop.height}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-x-0 top-0 h-[min(100%,170vw)] w-full object-cover object-[50%_22%] opacity-[0.08] [filter:sepia(0.45)_saturate(0.7)] [mask-image:linear-gradient(to_bottom,transparent,#000_18%,#000_45%,transparent)] lg:inset-y-0 lg:right-0 lg:left-auto lg:h-full lg:w-[58%] lg:object-[50%_28%] lg:[mask-composite:intersect] lg:[mask-image:linear-gradient(to_left,#000_40%,transparent),linear-gradient(to_bottom,transparent,#000_22%,#000_80%,transparent)] dark:opacity-[0.06] dark:[filter:grayscale(1)_contrast(1.1)]"
+        />
+        {/* Forest-green overlay keeps contrast even across the photograph */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(23,61,44,0.35),rgba(23,61,44,0)_35%,rgba(23,61,44,0.25))] dark:bg-[linear-gradient(180deg,rgba(13,37,29,0.45),rgba(13,37,29,0.1)_40%,rgba(13,37,29,0.4))]" />
+        {/* Light theme only: a faint warm parchment wash */}
+        <div className="absolute inset-0 bg-[radial-gradient(60%_55%_at_75%_30%,rgba(244,242,233,0.05),transparent_70%)] dark:hidden" />
+      </div>
+
       {/* Atmospheric light */}
       <div
         className="absolute inset-0 -z-10"

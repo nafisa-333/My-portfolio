@@ -77,6 +77,44 @@ export const researchInterests = [
   },
 ];
 
+const BASE = import.meta.env.BASE_URL;
+
+/** Public path helper that respects the GitHub Pages base path (/My-portfolio/). */
+export const asset = (path: string) => `${BASE}${path}`;
+
+export const cv = {
+  href: asset('documents/Nafisa_Siddiquee_CV.pdf'),
+  filename: 'Nafisa_Siddiquee_CV.pdf',
+};
+
+/** A research document: the original PDF for download, plus image renderings of it for in-page preview. */
+export type ResearchDocument = {
+  label: string;
+  title: string;
+  description: string;
+  pdf: string;
+  filename: string;
+  image: { base: string; widths: number[]; width: number; height: number };
+  alt: string;
+  /** Display width (CSS px) when the viewer is switched to full size. */
+  fullWidth: number;
+};
+
+export const docSrcSet = (d: ResearchDocument) =>
+  d.image.widths.map((w) => `${BASE}images/optimized/${d.image.base}-${w}.webp ${w}w`).join(', ');
+export const docSrc = (d: ResearchDocument) =>
+  `${BASE}images/optimized/${d.image.base}-${d.image.widths[0]}.webp`;
+
+export type ResearchDetails = {
+  category: string;
+  overview: string;
+  facts: { label: string; value: string }[];
+  /** Abstract exactly as printed on the research poster (Abstract ID RAI01-062). */
+  abstract: string[];
+  poster: ResearchDocument;
+  certificate: ResearchDocument;
+};
+
 export type PublicationStatus = 'under-review' | 'conference';
 
 export const publications: {
@@ -88,6 +126,7 @@ export const publications: {
   status: PublicationStatus;
   statusLabel: string;
   field: string;
+  details?: ResearchDetails;
 }[] = [
   {
     title:
@@ -101,21 +140,55 @@ export const publications: {
     field: 'Microbiology · Molecular Detection · Antimicrobial Resistance',
   },
   {
-    title: 'Public Awareness and Expectations of Accelerated Reliable MRI Imaging Using Machine Learning',
+    // Title, author order and details follow the research poster and the certificate of presentation.
+    title: 'Public Awareness and Expectations of Accelerated & Reliable MRI Imaging Using Machine Learning',
     authors: [
-      'Nafisa Siddiquee',
-      'Ifreet Zareef Hossain',
-      'Mahir Mohtab Ayman',
       'Prantik Baroi',
-      'Shraysree Mandal',
+      'Shrayasee Mandal',
+      'Ifreet Zareef Hossain',
+      'Nafisa Siddiquee',
+      'Mahir Mohtab Ayman',
       'Juena Ahmed Noshin',
     ],
-    venue: 'International Conference on Electronics and Informatics (ICEI), Bangladesh',
-    venueType: 'Conference paper',
+    venue: 'International Conference on Electronics and Informatics 2026 (ICEI2026), Dhaka',
+    venueType: 'Conference presentation',
     year: '2026',
     status: 'conference',
-    statusLabel: 'Conference Contribution',
+    statusLabel: 'Presented · ICEI 2026',
     field: 'Interdisciplinary · Medical Imaging · Public Perception',
+    details: {
+      category: 'Descriptive cross-sectional survey · Machine learning in MRI',
+      overview:
+        'A survey study of public awareness and trust regarding the use of machine learning in MRI: what people expect from ML-supported scans, such as speed, image quality and accuracy, and the data-privacy concerns that accompany them.',
+      facts: [
+        { label: 'Abstract ID', value: 'RAI01-062' },
+        { label: 'Presented', value: '07–08 May 2026 · Atomic Energy Centre, Dhaka' },
+        { label: 'Organised by', value: 'Bangladesh Electronics and Informatics Society (BEIS)' },
+      ],
+      abstract: [
+        'Magnetic Resonance Imaging (MRI) is widely used in diagnosing various conditions, there are many disadvantages associated with this technology, such as long imaging time, patient discomfort, and expensive costs. This research paper will explore the level of general awareness of the public regarding the ability of machine learning technologies to improve the functionality and accuracy of the diagnostics tool. To achieve this goal, a survey was conducted via Google Forms among 60 respondents of different age groups and educational backgrounds. The results revealed that most respondents have already experienced MRI and had an understanding of the possibility of the application of machine learning technologies. Respondents thought that ML would help to reduce time and improve image quality, and 91.1% were ready to use ML-supported MRI. However, concerns for data privacy were present.',
+      ],
+      poster: {
+        label: 'Research Poster',
+        title: 'Public Awareness and Expectations of Accelerated & Reliable MRI Imaging Using Machine Learning',
+        description: 'Research poster, ICEI 2026 · Abstract ID RAI01-062',
+        pdf: asset('documents/ML_in_MRI_Poster.pdf'),
+        filename: 'ML_in_MRI_Research_Poster.pdf',
+        image: { base: 'ml-mri-poster', widths: [1200, 2400], width: 2400, height: 3840 },
+        alt: 'Research poster: Public Awareness and Expectations of Accelerated & Reliable MRI Imaging Using Machine Learning, with abstract, methodology, introduction, workflow, survey charts, results, discussion and conclusion.',
+        fullWidth: 1600,
+      },
+      certificate: {
+        label: 'Certificate of Presentation',
+        title: 'International Conference on Electronics and Informatics 2026',
+        description: 'Certificate of Presentation, ICEI 2026 · Presented by Prantik Baroi',
+        pdf: asset('documents/ML_in_MRI_Certificate.pdf'),
+        filename: 'ML_in_MRI_Certificate_of_Presentation.pdf',
+        image: { base: 'ml-mri-certificate', widths: [1200, 2400], width: 2400, height: 1800 },
+        alt: 'Certificate of Presentation from the International Conference on Electronics and Informatics 2026 for abstract RAI01-062, listing the authors including Nafisa Siddiquee, presented by Prantik Baroi at the Atomic Energy Centre, Dhaka, on 07–08 May 2026.',
+        fullWidth: 1800,
+      },
+    },
   },
 ];
 
@@ -239,7 +312,14 @@ export const photos: Record<'hero' | 'about', Photo> = {
   },
 };
 
-const BASE = import.meta.env.BASE_URL;
+/** Former gallery photograph, now used only as a faint texture behind Research Interests. */
+export const researchBackdrop = {
+  srcSet: [700, 1152].map((w) => `${BASE}images/optimized/nafisa-gallery-${w}.webp ${w}w`).join(', '),
+  src: `${BASE}images/optimized/nafisa-gallery-1152.webp`,
+  width: 1152,
+  height: 2048,
+};
+
 export const srcSet = (p: Photo) =>
   p.widths.map((w) => `${BASE}images/optimized/${p.base}-${w}.webp ${w}w`).join(', ');
 export const fallbackSrc = (p: Photo) => `${BASE}images/${p.base}.jpeg`;

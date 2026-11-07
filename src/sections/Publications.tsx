@@ -1,8 +1,9 @@
 import { motion } from 'motion/react';
 import { BookOpen, Clock3, Presentation } from 'lucide-react';
-import { publications, type PublicationStatus } from '../data/content';
+import { profile, publications, type PublicationStatus } from '../data/content';
 import { SectionHeading } from '../components/SectionHeading';
 import { ease, inViewOnce } from '../components/Reveal';
+import { ResearchMaterials } from '../components/ResearchMaterials';
 
 const statusStyle: Record<PublicationStatus, { icon: typeof Clock3; cls: string }> = {
   'under-review': {
@@ -30,7 +31,7 @@ function Authors({ names }: { names: string[] }) {
     <p className="text-sm leading-relaxed text-ink-soft">
       {names.map((n, i) => (
         <span key={n}>
-          {i === 0 ? <strong className="font-semibold text-ink">{n}</strong> : n}
+          {n === profile.name ? <strong className="font-semibold text-ink">{n}</strong> : n}
           {i < names.length - 1 && ', '}
         </span>
       ))}
@@ -51,10 +52,10 @@ export function Publications() {
               Research in <em className="text-forest">Progress</em>
             </>
           }
-          intro="Two research contributions: a microbiology manuscript under journal review and an interdisciplinary conference paper. The status of each is labelled."
+          intro="Two research contributions: a microbiology manuscript under journal review and an interdisciplinary study presented at an international conference. The status of each is labelled."
         />
 
-        <div className="mt-16 grid gap-6 lg:mt-20 lg:grid-cols-2 lg:gap-8">
+        <div className="mt-16 grid gap-6 lg:mt-20 lg:grid-cols-2 lg:items-start lg:gap-8">
           {publications.map((p, i) => {
             const S = statusStyle[p.status];
             return (
@@ -85,6 +86,8 @@ export function Publications() {
                 <h3 id={`pub-${i}`} className="font-display mt-3 text-[1.75rem] leading-[1.15] text-ink sm:text-[2.1rem]">
                   <TitleText text={p.title} />
                 </h3>
+
+                {p.details && <ResearchMaterials details={p.details} index={i} />}
 
                 <div className="mt-auto pt-10">
                   <Authors names={p.authors} />
